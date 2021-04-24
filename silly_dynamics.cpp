@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'silly_dynamics'.
 //
-// Model version                  : 1.7
+// Model version                  : 1.9
 // Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
-// C/C++ source code generated on : Wed Apr 21 15:58:41 2021
+// C/C++ source code generated on : Fri Apr 23 21:41:52 2021
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -66,7 +66,7 @@ static void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
   real_T *f2 = id->f[2];
   real_T hB[3];
   int_T i;
-  int_T nXc = 3;
+  int_T nXc = 4;
   rtsiSetSimTimeStep(si,MINOR_TIME_STEP);
 
   // Save the state values at time t in y, we'll use x as ynew.
@@ -135,7 +135,7 @@ static void matlabCodegenHandle_matlabCod_h(ros_slros_internal_block_Subs_T *obj
 void silly_dynamics_step(void)
 {
   boolean_T b_varargout_1;
-  real_T rtb_Sum_g;
+  real_T rtb_Sum_f;
   real_T rtb_Sum;
   if (rtmIsMajorTimeStep(silly_dynamics_M)) {
     // set solver stop time
@@ -149,80 +149,101 @@ void silly_dynamics_step(void)
     silly_dynamics_M->Timing.t[0] = rtsiGetT(&silly_dynamics_M->solverInfo);
   }
 
-  // TransferFcn: '<S4>/Transfer Fcn'
-  rtb_Sum = silly_dynamics_P.TransferFcn_C * silly_dynamics_X.TransferFcn_CSTATE;
+  // TransferFcn: '<Root>/Transfer Fcn'
+  silly_dynamics_B.TransferFcn = 0.0;
+  silly_dynamics_B.TransferFcn += silly_dynamics_P.TransferFcn_C[0] *
+    silly_dynamics_X.TransferFcn_CSTATE[0];
+  silly_dynamics_B.TransferFcn += silly_dynamics_P.TransferFcn_C[1] *
+    silly_dynamics_X.TransferFcn_CSTATE[1];
 
   // BusAssignment: '<Root>/Bus Assignment' incorporates:
   //   Constant: '<S1>/Constant'
 
   silly_dynamics_B.BusAssignment = silly_dynamics_P.Constant_Value_o;
-  silly_dynamics_B.BusAssignment.Linear.X = rtb_Sum;
+  silly_dynamics_B.BusAssignment.Linear.X = silly_dynamics_B.TransferFcn;
 
   // Outputs for Atomic SubSystem: '<Root>/Publish'
-  // MATLABSystem: '<S2>/SinkBlock'
-  Pub_silly_dynamics_27.publish(&silly_dynamics_B.BusAssignment);
+  // MATLABSystem: '<S3>/SinkBlock'
+  Pub_silly_dynamics_57.publish(&silly_dynamics_B.BusAssignment);
 
   // End of Outputs for SubSystem: '<Root>/Publish'
   if (rtmIsMajorTimeStep(silly_dynamics_M)) {
     // Outputs for Atomic SubSystem: '<Root>/Subscribe'
-    // MATLABSystem: '<S3>/SourceBlock' incorporates:
-    //   Inport: '<S5>/In1'
+    // MATLABSystem: '<S4>/SourceBlock' incorporates:
+    //   Inport: '<S53>/In1'
 
-    b_varargout_1 = Sub_silly_dynamics_23.getLatestMessage
+    b_varargout_1 = Sub_silly_dynamics_58.getLatestMessage
       (&silly_dynamics_B.BusAssignment);
 
-    // Outputs for Enabled SubSystem: '<S3>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S5>/Enable'
+    // Outputs for Enabled SubSystem: '<S4>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S53>/Enable'
 
     if (b_varargout_1) {
       silly_dynamics_B.In1 = silly_dynamics_B.BusAssignment;
     }
 
-    // End of MATLABSystem: '<S3>/SourceBlock'
-    // End of Outputs for SubSystem: '<S3>/Enabled Subsystem'
+    // End of MATLABSystem: '<S4>/SourceBlock'
+    // End of Outputs for SubSystem: '<S4>/Enabled Subsystem'
     // End of Outputs for SubSystem: '<Root>/Subscribe'
+
+    // Sum: '<Root>/Sum' incorporates:
+    //   Memory: '<Root>/Memory'
+
+    rtb_Sum = silly_dynamics_B.In1.Linear.X -
+      silly_dynamics_DW.Memory_PreviousInput;
+
+    // Gain: '<S41>/Proportional Gain'
+    silly_dynamics_B.ProportionalGain = silly_dynamics_P.PIDController_P *
+      rtb_Sum;
+
+    // Gain: '<S30>/Derivative Gain'
+    silly_dynamics_B.DerivativeGain = silly_dynamics_P.PIDController_D * rtb_Sum;
   }
 
-  // Sum: '<Root>/Sum'
-  rtb_Sum = silly_dynamics_B.In1.Linear.X - rtb_Sum;
+  // Gain: '<S39>/Filter Coefficient' incorporates:
+  //   Integrator: '<S31>/Filter'
+  //   Sum: '<S31>/SumD'
 
-  // Gain: '<S41>/Filter Coefficient' incorporates:
-  //   Gain: '<S32>/Derivative Gain'
-  //   Integrator: '<S33>/Filter'
-  //   Sum: '<S33>/SumD'
+  silly_dynamics_B.FilterCoefficient = (silly_dynamics_B.DerivativeGain -
+    silly_dynamics_X.Filter_CSTATE) * silly_dynamics_P.PIDController_N;
 
-  silly_dynamics_B.FilterCoefficient = (silly_dynamics_P.PIDController_D *
-    rtb_Sum - silly_dynamics_X.Filter_CSTATE) * silly_dynamics_P.PIDController_N;
+  // Sum: '<S45>/Sum' incorporates:
+  //   Integrator: '<S36>/Integrator'
 
-  // Sum: '<S47>/Sum' incorporates:
-  //   Gain: '<S43>/Proportional Gain'
-  //   Integrator: '<S38>/Integrator'
-
-  rtb_Sum_g = (silly_dynamics_P.PIDController_P * rtb_Sum +
+  rtb_Sum_f = (silly_dynamics_B.ProportionalGain +
                silly_dynamics_X.Integrator_CSTATE) +
     silly_dynamics_B.FilterCoefficient;
 
-  // Saturate: '<S45>/Saturation'
-  if (rtb_Sum_g > silly_dynamics_P.PIDController_UpperSaturationLi) {
+  // Saturate: '<S43>/Saturation'
+  if (rtb_Sum_f > silly_dynamics_P.PIDController_UpperSaturationLi) {
     silly_dynamics_B.Saturation =
       silly_dynamics_P.PIDController_UpperSaturationLi;
-  } else if (rtb_Sum_g < silly_dynamics_P.PIDController_LowerSaturationLi) {
+  } else if (rtb_Sum_f < silly_dynamics_P.PIDController_LowerSaturationLi) {
     silly_dynamics_B.Saturation =
       silly_dynamics_P.PIDController_LowerSaturationLi;
   } else {
-    silly_dynamics_B.Saturation = rtb_Sum_g;
+    silly_dynamics_B.Saturation = rtb_Sum_f;
   }
 
-  // End of Saturate: '<S45>/Saturation'
+  // End of Saturate: '<S43>/Saturation'
+  if (rtmIsMajorTimeStep(silly_dynamics_M)) {
+    // Gain: '<S33>/Integral Gain'
+    silly_dynamics_B.IntegralGain = silly_dynamics_P.PIDController_I * rtb_Sum;
+  }
 
-  // Sum: '<S31>/SumI4' incorporates:
-  //   Gain: '<S31>/Kb'
-  //   Gain: '<S35>/Integral Gain'
-  //   Sum: '<S31>/SumI2'
+  // Sum: '<S29>/SumI4' incorporates:
+  //   Gain: '<S29>/Kb'
+  //   Sum: '<S29>/SumI2'
 
-  silly_dynamics_B.SumI4 = (silly_dynamics_B.Saturation - rtb_Sum_g) *
-    silly_dynamics_P.PIDController_Kb + silly_dynamics_P.PIDController_I *
-    rtb_Sum;
+  silly_dynamics_B.SumI4 = (silly_dynamics_B.Saturation - rtb_Sum_f) *
+    silly_dynamics_P.PIDController_Kb + silly_dynamics_B.IntegralGain;
+  if (rtmIsMajorTimeStep(silly_dynamics_M)) {
+    if (rtmIsMajorTimeStep(silly_dynamics_M)) {
+      // Update for Memory: '<Root>/Memory'
+      silly_dynamics_DW.Memory_PreviousInput = silly_dynamics_B.TransferFcn;
+    }
+  }                                    // end MajorTimeStep
+
   if (rtmIsMajorTimeStep(silly_dynamics_M)) {
     rt_ertODEUpdateContinuousStates(&silly_dynamics_M->solverInfo);
 
@@ -254,16 +275,20 @@ void silly_dynamics_derivatives(void)
   XDot_silly_dynamics_T *_rtXdot;
   _rtXdot = ((XDot_silly_dynamics_T *) silly_dynamics_M->derivs);
 
-  // Derivatives for TransferFcn: '<S4>/Transfer Fcn'
-  _rtXdot->TransferFcn_CSTATE = 0.0;
-  _rtXdot->TransferFcn_CSTATE += silly_dynamics_P.TransferFcn_A *
-    silly_dynamics_X.TransferFcn_CSTATE;
-  _rtXdot->TransferFcn_CSTATE += silly_dynamics_B.Saturation;
+  // Derivatives for TransferFcn: '<Root>/Transfer Fcn'
+  _rtXdot->TransferFcn_CSTATE[0] = 0.0;
+  _rtXdot->TransferFcn_CSTATE[0] += silly_dynamics_P.TransferFcn_A[0] *
+    silly_dynamics_X.TransferFcn_CSTATE[0];
+  _rtXdot->TransferFcn_CSTATE[1] = 0.0;
+  _rtXdot->TransferFcn_CSTATE[0] += silly_dynamics_P.TransferFcn_A[1] *
+    silly_dynamics_X.TransferFcn_CSTATE[1];
+  _rtXdot->TransferFcn_CSTATE[1] += silly_dynamics_X.TransferFcn_CSTATE[0];
+  _rtXdot->TransferFcn_CSTATE[0] += silly_dynamics_B.Saturation;
 
-  // Derivatives for Integrator: '<S38>/Integrator'
+  // Derivatives for Integrator: '<S36>/Integrator'
   _rtXdot->Integrator_CSTATE = silly_dynamics_B.SumI4;
 
-  // Derivatives for Integrator: '<S33>/Filter'
+  // Derivatives for Integrator: '<S31>/Filter'
   _rtXdot->Filter_CSTATE = silly_dynamics_B.FilterCoefficient;
 }
 
@@ -320,49 +345,54 @@ void silly_dynamics_initialize(void)
     int32_T i;
     static const char_T tmp_1[7] = { 'c', 'm', 'd', '_', 'v', 'e', 'l' };
 
-    // InitializeConditions for TransferFcn: '<S4>/Transfer Fcn'
-    silly_dynamics_X.TransferFcn_CSTATE = 0.0;
+    // InitializeConditions for TransferFcn: '<Root>/Transfer Fcn'
+    silly_dynamics_X.TransferFcn_CSTATE[0] = 0.0;
+    silly_dynamics_X.TransferFcn_CSTATE[1] = 0.0;
 
-    // InitializeConditions for Integrator: '<S38>/Integrator'
+    // InitializeConditions for Memory: '<Root>/Memory'
+    silly_dynamics_DW.Memory_PreviousInput =
+      silly_dynamics_P.Memory_InitialCondition;
+
+    // InitializeConditions for Integrator: '<S36>/Integrator'
     silly_dynamics_X.Integrator_CSTATE =
-      silly_dynamics_P.PIDController_InitialConditio_l;
+      silly_dynamics_P.PIDController_InitialConditio_g;
 
-    // InitializeConditions for Integrator: '<S33>/Filter'
+    // InitializeConditions for Integrator: '<S31>/Filter'
     silly_dynamics_X.Filter_CSTATE =
       silly_dynamics_P.PIDController_InitialConditionF;
 
     // SystemInitialize for Atomic SubSystem: '<Root>/Publish'
-    // Start for MATLABSystem: '<S2>/SinkBlock'
+    // Start for MATLABSystem: '<S3>/SinkBlock'
     silly_dynamics_DW.obj.matlabCodegenIsDeleted = false;
     silly_dynamics_DW.obj.isInitialized = 1;
     tmp[0] = 'v';
     tmp[1] = 'e';
     tmp[2] = 'l';
     tmp[3] = '\x00';
-    Pub_silly_dynamics_27.createPublisher(tmp, 1);
+    Pub_silly_dynamics_57.createPublisher(tmp, 1);
     silly_dynamics_DW.obj.isSetupComplete = true;
 
     // End of SystemInitialize for SubSystem: '<Root>/Publish'
 
     // SystemInitialize for Atomic SubSystem: '<Root>/Subscribe'
-    // SystemInitialize for Enabled SubSystem: '<S3>/Enabled Subsystem'
-    // SystemInitialize for Outport: '<S5>/Out1'
+    // SystemInitialize for Enabled SubSystem: '<S4>/Enabled Subsystem'
+    // SystemInitialize for Outport: '<S53>/Out1'
     silly_dynamics_B.In1 = silly_dynamics_P.Out1_Y0;
 
-    // End of SystemInitialize for SubSystem: '<S3>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S4>/Enabled Subsystem'
 
-    // Start for MATLABSystem: '<S3>/SourceBlock'
-    silly_dynamics_DW.obj_m.matlabCodegenIsDeleted = false;
-    silly_dynamics_DW.obj_m.isInitialized = 1;
+    // Start for MATLABSystem: '<S4>/SourceBlock'
+    silly_dynamics_DW.obj_f.matlabCodegenIsDeleted = false;
+    silly_dynamics_DW.obj_f.isInitialized = 1;
     for (i = 0; i < 7; i++) {
       tmp_0[i] = tmp_1[i];
     }
 
     tmp_0[7] = '\x00';
-    Sub_silly_dynamics_23.createSubscriber(tmp_0, 1);
-    silly_dynamics_DW.obj_m.isSetupComplete = true;
+    Sub_silly_dynamics_58.createSubscriber(tmp_0, 1);
+    silly_dynamics_DW.obj_f.isSetupComplete = true;
 
-    // End of Start for MATLABSystem: '<S3>/SourceBlock'
+    // End of Start for MATLABSystem: '<S4>/SourceBlock'
     // End of SystemInitialize for SubSystem: '<Root>/Subscribe'
   }
 }
@@ -371,14 +401,14 @@ void silly_dynamics_initialize(void)
 void silly_dynamics_terminate(void)
 {
   // Terminate for Atomic SubSystem: '<Root>/Publish'
-  // Terminate for MATLABSystem: '<S2>/SinkBlock'
+  // Terminate for MATLABSystem: '<S3>/SinkBlock'
   matlabCodegenHandle_matlabCodeg(&silly_dynamics_DW.obj);
 
   // End of Terminate for SubSystem: '<Root>/Publish'
 
   // Terminate for Atomic SubSystem: '<Root>/Subscribe'
-  // Terminate for MATLABSystem: '<S3>/SourceBlock'
-  matlabCodegenHandle_matlabCod_h(&silly_dynamics_DW.obj_m);
+  // Terminate for MATLABSystem: '<S4>/SourceBlock'
+  matlabCodegenHandle_matlabCod_h(&silly_dynamics_DW.obj_f);
 
   // End of Terminate for SubSystem: '<Root>/Subscribe'
 }

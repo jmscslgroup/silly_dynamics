@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'silly_dynamics'.
 //
-// Model version                  : 1.7
+// Model version                  : 1.9
 // Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
-// C/C++ source code generated on : Wed Apr 21 15:58:41 2021
+// C/C++ source code generated on : Fri Apr 23 21:41:52 2021
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -22,52 +22,52 @@
 // Block parameters (default storage)
 P_silly_dynamics_T silly_dynamics_P = {
   // Mask Parameter: PIDController_D
-  //  Referenced by: '<S32>/Derivative Gain'
+  //  Referenced by: '<S30>/Derivative Gain'
 
-  -0.0164755099565681,
+  -0.35903427507748,
 
   // Mask Parameter: PIDController_I
-  //  Referenced by: '<S35>/Integral Gain'
+  //  Referenced by: '<S33>/Integral Gain'
 
-  12.6793935773502,
+  7.94574396695634,
 
   // Mask Parameter: PIDController_InitialConditionF
-  //  Referenced by: '<S33>/Filter'
+  //  Referenced by: '<S31>/Filter'
 
   0.0,
 
-  // Mask Parameter: PIDController_InitialConditio_l
-  //  Referenced by: '<S38>/Integrator'
+  // Mask Parameter: PIDController_InitialConditio_g
+  //  Referenced by: '<S36>/Integrator'
 
   0.0,
 
   // Mask Parameter: PIDController_Kb
-  //  Referenced by: '<S31>/Kb'
+  //  Referenced by: '<S29>/Kb'
 
   1.0,
 
   // Mask Parameter: PIDController_LowerSaturationLi
-  //  Referenced by: '<S45>/Saturation'
+  //  Referenced by: '<S43>/Saturation'
 
   0.0,
 
   // Mask Parameter: PIDController_N
-  //  Referenced by: '<S41>/Filter Coefficient'
+  //  Referenced by: '<S39>/Filter Coefficient'
 
-  487.100497475099,
+  17.4511617325516,
 
   // Mask Parameter: PIDController_P
-  //  Referenced by: '<S43>/Proportional Gain'
+  //  Referenced by: '<S41>/Proportional Gain'
 
-  8.02522909600026,
+  6.26556520190651,
 
   // Mask Parameter: PIDController_UpperSaturationLi
-  //  Referenced by: '<S45>/Saturation'
+  //  Referenced by: '<S43>/Saturation'
 
   0.0,
 
   // Computed Parameter: Out1_Y0
-  //  Referenced by: '<S5>/Out1'
+  //  Referenced by: '<S53>/Out1'
 
   {
     {
@@ -84,7 +84,7 @@ P_silly_dynamics_T silly_dynamics_P = {
   },
 
   // Computed Parameter: Constant_Value
-  //  Referenced by: '<S3>/Constant'
+  //  Referenced by: '<S4>/Constant'
 
   {
     {
@@ -118,14 +118,19 @@ P_silly_dynamics_T silly_dynamics_P = {
   },
 
   // Computed Parameter: TransferFcn_A
-  //  Referenced by: '<S4>/Transfer Fcn'
+  //  Referenced by: '<Root>/Transfer Fcn'
 
-  -0.5,
+  { -0.5, -0.25 },
 
   // Computed Parameter: TransferFcn_C
-  //  Referenced by: '<S4>/Transfer Fcn'
+  //  Referenced by: '<Root>/Transfer Fcn'
 
-  0.5
+  { 1.0, 0.5 },
+
+  // Expression: 0
+  //  Referenced by: '<Root>/Memory'
+
+  0.0
 };
 
 //

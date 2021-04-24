@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'silly_dynamics'.
 //
-// Model version                  : 1.7
+// Model version                  : 1.9
 // Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
-// C/C++ source code generated on : Wed Apr 21 15:58:41 2021
+// C/C++ source code generated on : Fri Apr 23 21:41:52 2021
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -147,38 +147,43 @@
 
 // Block signals (default storage)
 typedef struct {
-  SL_Bus_silly_dynamics_geometry_msgs_Twist In1;// '<S5>/In1'
+  SL_Bus_silly_dynamics_geometry_msgs_Twist In1;// '<S53>/In1'
   SL_Bus_silly_dynamics_geometry_msgs_Twist BusAssignment;// '<Root>/Bus Assignment' 
-  real_T FilterCoefficient;            // '<S41>/Filter Coefficient'
-  real_T Saturation;                   // '<S45>/Saturation'
-  real_T SumI4;                        // '<S31>/SumI4'
+  real_T TransferFcn;                  // '<Root>/Transfer Fcn'
+  real_T ProportionalGain;             // '<S41>/Proportional Gain'
+  real_T DerivativeGain;               // '<S30>/Derivative Gain'
+  real_T FilterCoefficient;            // '<S39>/Filter Coefficient'
+  real_T Saturation;                   // '<S43>/Saturation'
+  real_T IntegralGain;                 // '<S33>/Integral Gain'
+  real_T SumI4;                        // '<S29>/SumI4'
 } B_silly_dynamics_T;
 
 // Block states (default storage) for system '<Root>'
 typedef struct {
-  ros_slros_internal_block_Publ_T obj; // '<S2>/SinkBlock'
-  ros_slros_internal_block_Subs_T obj_m;// '<S3>/SourceBlock'
+  ros_slros_internal_block_Publ_T obj; // '<S3>/SinkBlock'
+  ros_slros_internal_block_Subs_T obj_f;// '<S4>/SourceBlock'
+  real_T Memory_PreviousInput;         // '<Root>/Memory'
 } DW_silly_dynamics_T;
 
 // Continuous states (default storage)
 typedef struct {
-  real_T TransferFcn_CSTATE;           // '<S4>/Transfer Fcn'
-  real_T Integrator_CSTATE;            // '<S38>/Integrator'
-  real_T Filter_CSTATE;                // '<S33>/Filter'
+  real_T TransferFcn_CSTATE[2];        // '<Root>/Transfer Fcn'
+  real_T Integrator_CSTATE;            // '<S36>/Integrator'
+  real_T Filter_CSTATE;                // '<S31>/Filter'
 } X_silly_dynamics_T;
 
 // State derivatives (default storage)
 typedef struct {
-  real_T TransferFcn_CSTATE;           // '<S4>/Transfer Fcn'
-  real_T Integrator_CSTATE;            // '<S38>/Integrator'
-  real_T Filter_CSTATE;                // '<S33>/Filter'
+  real_T TransferFcn_CSTATE[2];        // '<Root>/Transfer Fcn'
+  real_T Integrator_CSTATE;            // '<S36>/Integrator'
+  real_T Filter_CSTATE;                // '<S31>/Filter'
 } XDot_silly_dynamics_T;
 
 // State disabled
 typedef struct {
-  boolean_T TransferFcn_CSTATE;        // '<S4>/Transfer Fcn'
-  boolean_T Integrator_CSTATE;         // '<S38>/Integrator'
-  boolean_T Filter_CSTATE;             // '<S33>/Filter'
+  boolean_T TransferFcn_CSTATE[2];     // '<Root>/Transfer Fcn'
+  boolean_T Integrator_CSTATE;         // '<S36>/Integrator'
+  boolean_T Filter_CSTATE;             // '<S31>/Filter'
 } XDis_silly_dynamics_T;
 
 #ifndef ODE3_INTG
@@ -195,50 +200,53 @@ typedef struct {
 // Parameters (default storage)
 struct P_silly_dynamics_T_ {
   real_T PIDController_D;              // Mask Parameter: PIDController_D
-                                          //  Referenced by: '<S32>/Derivative Gain'
+                                          //  Referenced by: '<S30>/Derivative Gain'
 
   real_T PIDController_I;              // Mask Parameter: PIDController_I
-                                          //  Referenced by: '<S35>/Integral Gain'
+                                          //  Referenced by: '<S33>/Integral Gain'
 
   real_T PIDController_InitialConditionF;
                               // Mask Parameter: PIDController_InitialConditionF
-                                 //  Referenced by: '<S33>/Filter'
+                                 //  Referenced by: '<S31>/Filter'
 
-  real_T PIDController_InitialConditio_l;
-                              // Mask Parameter: PIDController_InitialConditio_l
-                                 //  Referenced by: '<S38>/Integrator'
+  real_T PIDController_InitialConditio_g;
+                              // Mask Parameter: PIDController_InitialConditio_g
+                                 //  Referenced by: '<S36>/Integrator'
 
   real_T PIDController_Kb;             // Mask Parameter: PIDController_Kb
-                                          //  Referenced by: '<S31>/Kb'
+                                          //  Referenced by: '<S29>/Kb'
 
   real_T PIDController_LowerSaturationLi;
                               // Mask Parameter: PIDController_LowerSaturationLi
-                                 //  Referenced by: '<S45>/Saturation'
+                                 //  Referenced by: '<S43>/Saturation'
 
   real_T PIDController_N;              // Mask Parameter: PIDController_N
-                                          //  Referenced by: '<S41>/Filter Coefficient'
+                                          //  Referenced by: '<S39>/Filter Coefficient'
 
   real_T PIDController_P;              // Mask Parameter: PIDController_P
-                                          //  Referenced by: '<S43>/Proportional Gain'
+                                          //  Referenced by: '<S41>/Proportional Gain'
 
   real_T PIDController_UpperSaturationLi;
                               // Mask Parameter: PIDController_UpperSaturationLi
-                                 //  Referenced by: '<S45>/Saturation'
+                                 //  Referenced by: '<S43>/Saturation'
 
   SL_Bus_silly_dynamics_geometry_msgs_Twist Out1_Y0;// Computed Parameter: Out1_Y0
-                                                       //  Referenced by: '<S5>/Out1'
+                                                       //  Referenced by: '<S53>/Out1'
 
   SL_Bus_silly_dynamics_geometry_msgs_Twist Constant_Value;// Computed Parameter: Constant_Value
-                                                              //  Referenced by: '<S3>/Constant'
+                                                              //  Referenced by: '<S4>/Constant'
 
   SL_Bus_silly_dynamics_geometry_msgs_Twist Constant_Value_o;// Computed Parameter: Constant_Value_o
                                                                 //  Referenced by: '<S1>/Constant'
 
-  real_T TransferFcn_A;                // Computed Parameter: TransferFcn_A
-                                          //  Referenced by: '<S4>/Transfer Fcn'
+  real_T TransferFcn_A[2];             // Computed Parameter: TransferFcn_A
+                                          //  Referenced by: '<Root>/Transfer Fcn'
 
-  real_T TransferFcn_C;                // Computed Parameter: TransferFcn_C
-                                          //  Referenced by: '<S4>/Transfer Fcn'
+  real_T TransferFcn_C[2];             // Computed Parameter: TransferFcn_C
+                                          //  Referenced by: '<Root>/Transfer Fcn'
+
+  real_T Memory_InitialCondition;      // Expression: 0
+                                          //  Referenced by: '<Root>/Memory'
 
 };
 
@@ -254,8 +262,8 @@ struct tag_RTM_silly_dynamics_T {
   boolean_T zCCacheNeedsReset;
   boolean_T derivCacheNeedsReset;
   boolean_T CTOutputIncnstWithState;
-  real_T odeY[3];
-  real_T odeF[3][3];
+  real_T odeY[4];
+  real_T odeF[3][4];
   ODE3_IntgData intgData;
 
   //
@@ -366,59 +374,58 @@ extern "C" {
 //
 //  '<Root>' : 'silly_dynamics'
 //  '<S1>'   : 'silly_dynamics/Blank Message'
-//  '<S2>'   : 'silly_dynamics/Publish'
-//  '<S3>'   : 'silly_dynamics/Subscribe'
-//  '<S4>'   : 'silly_dynamics/Subsystem'
-//  '<S5>'   : 'silly_dynamics/Subscribe/Enabled Subsystem'
-//  '<S6>'   : 'silly_dynamics/Subsystem/PID Controller'
-//  '<S7>'   : 'silly_dynamics/Subsystem/PID Controller/Anti-windup'
-//  '<S8>'   : 'silly_dynamics/Subsystem/PID Controller/D Gain'
-//  '<S9>'   : 'silly_dynamics/Subsystem/PID Controller/Filter'
-//  '<S10>'  : 'silly_dynamics/Subsystem/PID Controller/Filter ICs'
-//  '<S11>'  : 'silly_dynamics/Subsystem/PID Controller/I Gain'
-//  '<S12>'  : 'silly_dynamics/Subsystem/PID Controller/Ideal P Gain'
-//  '<S13>'  : 'silly_dynamics/Subsystem/PID Controller/Ideal P Gain Fdbk'
-//  '<S14>'  : 'silly_dynamics/Subsystem/PID Controller/Integrator'
-//  '<S15>'  : 'silly_dynamics/Subsystem/PID Controller/Integrator ICs'
-//  '<S16>'  : 'silly_dynamics/Subsystem/PID Controller/N Copy'
-//  '<S17>'  : 'silly_dynamics/Subsystem/PID Controller/N Gain'
-//  '<S18>'  : 'silly_dynamics/Subsystem/PID Controller/P Copy'
-//  '<S19>'  : 'silly_dynamics/Subsystem/PID Controller/Parallel P Gain'
-//  '<S20>'  : 'silly_dynamics/Subsystem/PID Controller/Reset Signal'
-//  '<S21>'  : 'silly_dynamics/Subsystem/PID Controller/Saturation'
-//  '<S22>'  : 'silly_dynamics/Subsystem/PID Controller/Saturation Fdbk'
-//  '<S23>'  : 'silly_dynamics/Subsystem/PID Controller/Sum'
-//  '<S24>'  : 'silly_dynamics/Subsystem/PID Controller/Sum Fdbk'
-//  '<S25>'  : 'silly_dynamics/Subsystem/PID Controller/Tracking Mode'
-//  '<S26>'  : 'silly_dynamics/Subsystem/PID Controller/Tracking Mode Sum'
-//  '<S27>'  : 'silly_dynamics/Subsystem/PID Controller/Tsamp - Integral'
-//  '<S28>'  : 'silly_dynamics/Subsystem/PID Controller/Tsamp - Ngain'
-//  '<S29>'  : 'silly_dynamics/Subsystem/PID Controller/postSat Signal'
-//  '<S30>'  : 'silly_dynamics/Subsystem/PID Controller/preSat Signal'
-//  '<S31>'  : 'silly_dynamics/Subsystem/PID Controller/Anti-windup/Back Calculation'
-//  '<S32>'  : 'silly_dynamics/Subsystem/PID Controller/D Gain/Internal Parameters'
-//  '<S33>'  : 'silly_dynamics/Subsystem/PID Controller/Filter/Cont. Filter'
-//  '<S34>'  : 'silly_dynamics/Subsystem/PID Controller/Filter ICs/Internal IC - Filter'
-//  '<S35>'  : 'silly_dynamics/Subsystem/PID Controller/I Gain/Internal Parameters'
-//  '<S36>'  : 'silly_dynamics/Subsystem/PID Controller/Ideal P Gain/Passthrough'
-//  '<S37>'  : 'silly_dynamics/Subsystem/PID Controller/Ideal P Gain Fdbk/Disabled'
-//  '<S38>'  : 'silly_dynamics/Subsystem/PID Controller/Integrator/Continuous'
-//  '<S39>'  : 'silly_dynamics/Subsystem/PID Controller/Integrator ICs/Internal IC'
-//  '<S40>'  : 'silly_dynamics/Subsystem/PID Controller/N Copy/Disabled'
-//  '<S41>'  : 'silly_dynamics/Subsystem/PID Controller/N Gain/Internal Parameters'
-//  '<S42>'  : 'silly_dynamics/Subsystem/PID Controller/P Copy/Disabled'
-//  '<S43>'  : 'silly_dynamics/Subsystem/PID Controller/Parallel P Gain/Internal Parameters'
-//  '<S44>'  : 'silly_dynamics/Subsystem/PID Controller/Reset Signal/Disabled'
-//  '<S45>'  : 'silly_dynamics/Subsystem/PID Controller/Saturation/Enabled'
-//  '<S46>'  : 'silly_dynamics/Subsystem/PID Controller/Saturation Fdbk/Disabled'
-//  '<S47>'  : 'silly_dynamics/Subsystem/PID Controller/Sum/Sum_PID'
-//  '<S48>'  : 'silly_dynamics/Subsystem/PID Controller/Sum Fdbk/Disabled'
-//  '<S49>'  : 'silly_dynamics/Subsystem/PID Controller/Tracking Mode/Disabled'
-//  '<S50>'  : 'silly_dynamics/Subsystem/PID Controller/Tracking Mode Sum/Passthrough'
-//  '<S51>'  : 'silly_dynamics/Subsystem/PID Controller/Tsamp - Integral/Passthrough'
-//  '<S52>'  : 'silly_dynamics/Subsystem/PID Controller/Tsamp - Ngain/Passthrough'
-//  '<S53>'  : 'silly_dynamics/Subsystem/PID Controller/postSat Signal/Forward_Path'
-//  '<S54>'  : 'silly_dynamics/Subsystem/PID Controller/preSat Signal/Forward_Path'
+//  '<S2>'   : 'silly_dynamics/PID Controller'
+//  '<S3>'   : 'silly_dynamics/Publish'
+//  '<S4>'   : 'silly_dynamics/Subscribe'
+//  '<S5>'   : 'silly_dynamics/PID Controller/Anti-windup'
+//  '<S6>'   : 'silly_dynamics/PID Controller/D Gain'
+//  '<S7>'   : 'silly_dynamics/PID Controller/Filter'
+//  '<S8>'   : 'silly_dynamics/PID Controller/Filter ICs'
+//  '<S9>'   : 'silly_dynamics/PID Controller/I Gain'
+//  '<S10>'  : 'silly_dynamics/PID Controller/Ideal P Gain'
+//  '<S11>'  : 'silly_dynamics/PID Controller/Ideal P Gain Fdbk'
+//  '<S12>'  : 'silly_dynamics/PID Controller/Integrator'
+//  '<S13>'  : 'silly_dynamics/PID Controller/Integrator ICs'
+//  '<S14>'  : 'silly_dynamics/PID Controller/N Copy'
+//  '<S15>'  : 'silly_dynamics/PID Controller/N Gain'
+//  '<S16>'  : 'silly_dynamics/PID Controller/P Copy'
+//  '<S17>'  : 'silly_dynamics/PID Controller/Parallel P Gain'
+//  '<S18>'  : 'silly_dynamics/PID Controller/Reset Signal'
+//  '<S19>'  : 'silly_dynamics/PID Controller/Saturation'
+//  '<S20>'  : 'silly_dynamics/PID Controller/Saturation Fdbk'
+//  '<S21>'  : 'silly_dynamics/PID Controller/Sum'
+//  '<S22>'  : 'silly_dynamics/PID Controller/Sum Fdbk'
+//  '<S23>'  : 'silly_dynamics/PID Controller/Tracking Mode'
+//  '<S24>'  : 'silly_dynamics/PID Controller/Tracking Mode Sum'
+//  '<S25>'  : 'silly_dynamics/PID Controller/Tsamp - Integral'
+//  '<S26>'  : 'silly_dynamics/PID Controller/Tsamp - Ngain'
+//  '<S27>'  : 'silly_dynamics/PID Controller/postSat Signal'
+//  '<S28>'  : 'silly_dynamics/PID Controller/preSat Signal'
+//  '<S29>'  : 'silly_dynamics/PID Controller/Anti-windup/Back Calculation'
+//  '<S30>'  : 'silly_dynamics/PID Controller/D Gain/Internal Parameters'
+//  '<S31>'  : 'silly_dynamics/PID Controller/Filter/Cont. Filter'
+//  '<S32>'  : 'silly_dynamics/PID Controller/Filter ICs/Internal IC - Filter'
+//  '<S33>'  : 'silly_dynamics/PID Controller/I Gain/Internal Parameters'
+//  '<S34>'  : 'silly_dynamics/PID Controller/Ideal P Gain/Passthrough'
+//  '<S35>'  : 'silly_dynamics/PID Controller/Ideal P Gain Fdbk/Disabled'
+//  '<S36>'  : 'silly_dynamics/PID Controller/Integrator/Continuous'
+//  '<S37>'  : 'silly_dynamics/PID Controller/Integrator ICs/Internal IC'
+//  '<S38>'  : 'silly_dynamics/PID Controller/N Copy/Disabled'
+//  '<S39>'  : 'silly_dynamics/PID Controller/N Gain/Internal Parameters'
+//  '<S40>'  : 'silly_dynamics/PID Controller/P Copy/Disabled'
+//  '<S41>'  : 'silly_dynamics/PID Controller/Parallel P Gain/Internal Parameters'
+//  '<S42>'  : 'silly_dynamics/PID Controller/Reset Signal/Disabled'
+//  '<S43>'  : 'silly_dynamics/PID Controller/Saturation/Enabled'
+//  '<S44>'  : 'silly_dynamics/PID Controller/Saturation Fdbk/Disabled'
+//  '<S45>'  : 'silly_dynamics/PID Controller/Sum/Sum_PID'
+//  '<S46>'  : 'silly_dynamics/PID Controller/Sum Fdbk/Disabled'
+//  '<S47>'  : 'silly_dynamics/PID Controller/Tracking Mode/Disabled'
+//  '<S48>'  : 'silly_dynamics/PID Controller/Tracking Mode Sum/Passthrough'
+//  '<S49>'  : 'silly_dynamics/PID Controller/Tsamp - Integral/Passthrough'
+//  '<S50>'  : 'silly_dynamics/PID Controller/Tsamp - Ngain/Passthrough'
+//  '<S51>'  : 'silly_dynamics/PID Controller/postSat Signal/Forward_Path'
+//  '<S52>'  : 'silly_dynamics/PID Controller/preSat Signal/Forward_Path'
+//  '<S53>'  : 'silly_dynamics/Subscribe/Enabled Subsystem'
 
 #endif                                 // RTW_HEADER_silly_dynamics_h_
 

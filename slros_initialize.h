@@ -8,10 +8,10 @@ extern ros::NodeHandle * SLROSNodePtr;
 extern const std::string SLROSNodeName;
 
 // For Block silly_dynamics/Subscribe
-extern SimulinkSubscriber<geometry_msgs::Twist, SL_Bus_silly_dynamics_geometry_msgs_Twist> Sub_silly_dynamics_23;
+extern SimulinkSubscriber<geometry_msgs::Twist, SL_Bus_silly_dynamics_geometry_msgs_Twist> Sub_silly_dynamics_58;
 
 // For Block silly_dynamics/Publish
-extern SimulinkPublisher<geometry_msgs::Twist, SL_Bus_silly_dynamics_geometry_msgs_Twist> Pub_silly_dynamics_27;
+extern SimulinkPublisher<geometry_msgs::Twist, SL_Bus_silly_dynamics_geometry_msgs_Twist> Pub_silly_dynamics_57;
 
 void slros_node_init(int argc, char** argv);
 

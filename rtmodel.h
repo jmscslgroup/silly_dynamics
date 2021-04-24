@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'silly_dynamics'.
 //
-// Model version                  : 1.7
+// Model version                  : 1.9
 // Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
-// C/C++ source code generated on : Wed Apr 21 15:58:41 2021
+// C/C++ source code generated on : Fri Apr 23 21:41:52 2021
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
