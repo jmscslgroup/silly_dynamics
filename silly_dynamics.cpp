@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'silly_dynamics'.
 //
-// Model version                  : 1.11
+// Model version                  : 1.14
 // Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
-// C/C++ source code generated on : Tue Apr 27 17:15:59 2021
+// C/C++ source code generated on : Tue May 11 14:17:03 2021
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -258,9 +258,9 @@ void silly_dynamics_step(void)
       (&silly_dynamics_M->solverInfo);
 
     {
-      // Update absolute timer for sample time: [0.05s, 0.0s]
+      // Update absolute timer for sample time: [0.1s, 0.0s]
       // The "clockTick1" counts the number of times the code of this task has
-      //  been executed. The resolution of this integer timer is 0.05, which is the step size
+      //  been executed. The resolution of this integer timer is 0.1, which is the step size
       //  of the task. Size of "clockTick1" ensures timer will not overflow during the
       //  application lifespan selected.
 
@@ -337,7 +337,7 @@ void silly_dynamics_initialize(void)
                     (&silly_dynamics_M->intgData));
   rtsiSetSolverName(&silly_dynamics_M->solverInfo,"ode3");
   rtmSetTPtr(silly_dynamics_M, &silly_dynamics_M->Timing.tArray[0]);
-  silly_dynamics_M->Timing.stepSize0 = 0.05;
+  silly_dynamics_M->Timing.stepSize0 = 0.1;
 
   {
     char_T tmp[4];

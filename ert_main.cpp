@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'silly_dynamics'.
 //
-// Model version                  : 1.11
+// Model version                  : 1.14
 // Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
-// C/C++ source code generated on : Tue Apr 27 17:15:59 2021
+// C/C++ source code generated on : Tue May 11 14:17:03 2021
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
   silly_dynamics_initialize();
 
   // Call RTOS Initialization function
-  myRTOSInit(0.05, 0);
+  myRTOSInit(0.1, 0);
 
   // Wait for stop semaphore
   sem_wait(&stopSem);
